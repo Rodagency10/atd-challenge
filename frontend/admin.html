@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Space</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+  </head>
+<body class="bg-gray-100">
+
+<div class="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-6 text-center">Admin Space</h1>
+
+    <h2 class="text-xl font-semibold mb-4">Create User Account</h2>
+    <form id="createUserForm" class="mb-6">
+        <div class="mb-4">
+            <label for="username" class="block text-gray-700 font-bold mb-2">Username:</label>
+            <input type="text" id="username" name="username" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="mb-4">
+            <label for="email" class="block text-gray-700 font-bold mb-2">Email:</label>
+            <input type="email" id="email" name="email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="mb-4">
+            <label for="password" class="block text-gray-700 font-bold mb-2">Password:</label>
+            <input type="password" id="password" name="password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="mb-4">
+            <label for="role" class="block text-gray-700 font-bold mb-2">Role:</label>
+            <select id="role" name="role" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+                <option value="traiteur">Traiteur</option>
+            </select>
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">Create Account</button>
+    </form>
+
+    <h2 class="text-xl font-semibold mb-4">Manage Roles</h2>
+    <!-- Logic to display and manage user roles will go here -->
+</div>
+
+<script>
+document.getElementById('createUserForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const role = document.getElementById('role').value;
+
+    try {
+        const response = await fetch('/api/user/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, email, password, role })
+        });
+        const data = await response.json();
+        if (response.ok) {
+            alert(data.message);
+            document.getElementById('createUserForm').reset();
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        alert('Error creating user account');
+    }
+});
+</script>
+
+</body>
+</html>
